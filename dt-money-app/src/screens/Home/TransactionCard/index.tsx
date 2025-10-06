@@ -1,13 +1,13 @@
 import { Transaction } from "@/shared/interfaces/transaction";
 import { FC } from "react";
 import { Text, View } from "react-native";
+import Swipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 import { MaterialIcons } from "@expo/vector-icons";
 import { format } from "date-fns";
 import { colors } from "@/shared/colors";
 import { TransactionTypes } from "@/shared/enums/transaction-types";
 import clsx from "clsx";
 import { RightAction } from "./RightAction";
-import Swipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 
 interface Params {
   transaction: Transaction;
