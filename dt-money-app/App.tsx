@@ -6,8 +6,17 @@ import { Snackbar } from "@/components/Snackbar";
 import { BottomSheetProvider } from "@/context/bottomsheet.context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { TransactionContextProvider } from "@/context/transaction.context";
+import {
+  configureReanimatedLogger,
+  ReanimatedLogLevel,
+} from "react-native-reanimated";
 
 export default function App() {
+  configureReanimatedLogger({
+    level: ReanimatedLogLevel.warn,
+    strict: false, // Reanimated runs in strict mode by default
+  });
+
   return (
     <GestureHandlerRootView className="flex-1">
       <SnackbarContextProvider>
