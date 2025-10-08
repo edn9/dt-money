@@ -1,5 +1,4 @@
 import { useTransactionContext } from "@/context/transaction.context";
-import { colors } from "@/shared/colors";
 import { TransactionTypes } from "@/shared/enums/transaction-types";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FC } from "react";
@@ -22,7 +21,33 @@ export const TransactionCard: FC<Props> = ({ amount, type }) => {
   const IconData = ICONS[type];
   const cardData = CARD_DATA[type];
 
-  const { transactions } = useTransactionContext();
+  const { transactions, filters } = useTransactionContext();
+
+  const renderDateInfo = () => {
+    if (type === "total") {
+      return (
+        <Text className="text-white text-base">
+          {filters.from && filters.to
+            ? `${format(filters.from, "dd MMMM", {
+                locale: ptBR,
+              })} até ${format(filters.to, "dd MMMM", { locale: ptBR })}`
+            : "Todo período"}
+        </Text>
+      );
+    } else {
+      return (
+        <Text className="text-white">
+          {lastTransaction?.createdAt
+            ? format(
+                lastTransaction?.createdAt,
+                `'Útima ${cardData.label.toLocaleLowerCase()} em' d 'de' MMMM`,
+                { locale: ptBR }
+              )
+            : "Nenhuma transação encontrada"}
+        </Text>
+      );
+    }
+  };
 
   const lastTransaction = transactions.find(
     ({ type: transactionType }) => transactionType.id === type
@@ -43,17 +68,8 @@ export const TransactionCard: FC<Props> = ({ amount, type }) => {
         <Text className="text-2xl text-gray-400 font-bold">
           R$ {moneyMapper(amount)}
         </Text>
-        {type !== "total" && (
-          <Text className="text-white">
-            {lastTransaction?.createdAt
-              ? format(
-                  lastTransaction?.createdAt,
-                  `'Útima ${cardData.label.toLocaleLowerCase()} em' d 'de' MMMM`,
-                  { locale: ptBR }
-                )
-              : "Nenhuma transação encontrada"}
-          </Text>
-        )}
+
+        {renderDateInfo()}
       </View>
     </View>
   );

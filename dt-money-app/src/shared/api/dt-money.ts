@@ -5,7 +5,8 @@ import { addTokenToRequest } from "../helpers/axios.helper";
 
 const baseURL = Platform.select({
   ios: "http://localhost:3001",
-  android: "http://10.0.2.2:3001",
+  android: "http://10.0.2.2:3001", //emulator
+  //android: "http://192.168.0.21:3001", //IRL mobile wifi
 });
 
 export const dtMoneyApi = axios.create({
