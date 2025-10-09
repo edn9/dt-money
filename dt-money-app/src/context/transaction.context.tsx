@@ -66,7 +66,31 @@ export type TransactionContextType = {
   resetFilter: () => Promise<void>;
 };
 
-export const TransactionContext = createContext({} as TransactionContextType);
+//correção de erro tipagem pode gerar erros fora do provider
+//export const TransactionContext = createContext({} as TransactionContextType); 
+
+export const TransactionContext = createContext<TransactionContextType>({
+  categories: [],
+  transactions: [],
+  totalTransactions: { expense: 0, revenue: 0, total: 0 },
+  searchText: "",
+  filters: filtersInitialValues,
+  loadings: { initial: false, refresh: false, loadMore: false },
+  pagination: { page: 1, perPage: 15, totalRows: 0, totalPages: 0 },
+
+  // Funções vazias seguras
+  fetchCategories: async () => {},
+  createTransaction: async () => {},
+  updateTransaction: async () => {},
+  fetchTransactions: async () => {},
+  refreshTransactions: async () => {},
+  loadMoreTransactions: async () => {},
+  handleLoadings: () => {},
+  setSearchText: () => {},
+  handleFilters: () => {},
+  handleCategoryFilters: () => {},
+  resetFilter: async () => {},
+});
 
 export const TransactionContextProvider: FC<PropsWithChildren> = ({
   children,
