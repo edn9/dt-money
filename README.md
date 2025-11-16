@@ -14,7 +14,7 @@ sdk install java 17.0.14.fx-zulu
 sdk default java 17.0.14.fx-zulu
 ```
 
-1. Instalar as libs:
+Instalar as libs:
 ```bash
 npm install
 ```   
@@ -22,4 +22,9 @@ npm install
    
 ```bash
 npm run android
+```
+
+Rodando backend:
+```bash
+npm run dev
 ```
