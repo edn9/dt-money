@@ -5,6 +5,7 @@ import {
   PropsWithChildren,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -17,6 +18,7 @@ import {
   Filters,
   Pagination,
 } from "@/shared/interfaces/https/get-transaction-request";
+import { useAuthContext } from "./auth.context";
 
 const filtersInitialValues = {
   categoryIds: {},
@@ -42,7 +44,7 @@ interface HandleLoadingsParams {
 
 interface HandleFiltersParams {
   key: keyof Filters;
-  value: Date | Boolean | number;
+  value: Date | boolean | number;
 }
 
 export type TransactionContextType = {
@@ -65,9 +67,6 @@ export type TransactionContextType = {
   handleCategoryFilters: (categoryId: number) => void;
   resetFilter: () => Promise<void>;
 };
-
-//correção de erro tipagem pode gerar erros fora do provider
-//export const TransactionContext = createContext({} as TransactionContextType); 
 
 export const TransactionContext = createContext<TransactionContextType>({
   categories: [],
@@ -95,6 +94,7 @@ export const TransactionContext = createContext<TransactionContextType>({
 export const TransactionContextProvider: FC<PropsWithChildren> = ({
   children,
 }) => {
+  const { user } = useAuthContext();
   const [categories, setCategories] = useState<TransactionCategory[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [searchText, setSearchText] = useState("");
@@ -119,6 +119,17 @@ export const TransactionContextProvider: FC<PropsWithChildren> = ({
     totalRows: 0,
     totalPages: 0,
   });
+
+  useEffect(() => {
+    if (!user) {
+      setTransactions([]);
+      setCategories([]);
+      setTotalTransactions({ expense: 0, revenue: 0, total: 0 });
+      setFilters(filtersInitialValues);
+      setSearchText("");
+      setPagination({ page: 1, perPage: 15, totalRows: 0, totalPages: 0 });
+    }
+  }, [user]);
 
   const categoryIds = useMemo(
     () =>
@@ -212,7 +223,7 @@ export const TransactionContextProvider: FC<PropsWithChildren> = ({
       ...prevValue,
       categoryIds: {
         ...prevValue.categoryIds,
-        [categoryId]: !Boolean(prevValue.categoryIds[categoryId]),
+        [categoryId]: !prevValue.categoryIds[categoryId],
       },
     }));
   };
@@ -238,29 +249,51 @@ export const TransactionContextProvider: FC<PropsWithChildren> = ({
     });
   }, []);
 
+  const value = useMemo(
+    () => ({
+      categories,
+      fetchCategories,
+      createTransaction,
+      updateTransaction,
+      fetchTransactions,
+      totalTransactions,
+      transactions,
+      refreshTransactions,
+      loadMoreTransactions,
+      loadings,
+      handleLoadings,
+      pagination,
+      setSearchText,
+      searchText,
+      filters,
+      handleFilters,
+      handleCategoryFilters,
+      resetFilter,
+    }),
+    [
+      categories,
+      fetchCategories,
+      createTransaction,
+      updateTransaction,
+      fetchTransactions,
+      totalTransactions,
+      transactions,
+      refreshTransactions,
+      loadMoreTransactions,
+      loadings,
+      handleLoadings,
+      pagination,
+      setSearchText,
+      searchText,
+      filters,
+      handleFilters,
+      handleCategoryFilters,
+      resetFilter,
+    ]
+  );
+
   return (
-    <TransactionContext.Provider
-      value={{
-        categories,
-        fetchCategories,
-        createTransaction,
-        updateTransaction,
-        fetchTransactions,
-        totalTransactions,
-        transactions,
-        refreshTransactions,
-        loadMoreTransactions,
-        loadings,
-        handleLoadings,
-        pagination,
-        setSearchText,
-        searchText,
-        filters,
-        handleFilters,
-        handleCategoryFilters,
-        resetFilter,
-      }}
-    >
+    <TransactionContext.Provider value={value}>
       {children}
     </TransactionContext.Provider>
   );

@@ -1,6 +1,12 @@
 import { UpdateTransactionInterface } from "@/shared/interfaces/https/update-transaction-request";
 import { FC, useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  ActivityIndicator,
+} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { colors } from "@/shared/colors";
 import { useBottomSheetContext } from "@/context/bottomsheet.context";
@@ -13,7 +19,6 @@ import { AppButton } from "@/components/AppButton";
 import { ErrorMessage } from "@/components/ErrorMessage";
 import { useTransactionContext } from "@/context/transaction.context";
 import { useErrorHandler } from "@/shared/hooks/useErrorHandler";
-import { ActivityIndicator } from "react-native";
 import { Transaction } from "@/shared/interfaces/transaction";
 
 type ValidationErrorsTypes = Record<keyof UpdateTransactionInterface, string>;
@@ -65,11 +70,11 @@ export const EditTransaction: FC<Params> = ({
       if (error instanceof Yup.ValidationError) {
         const errors = {} as ValidationErrorsTypes;
 
-        error.inner.forEach((err) => {
+        for (const err of error.inner) {
           if (err.path) {
             errors[err.path as keyof UpdateTransactionInterface] = err.message;
           }
-        });
+        }
 
         setValidationErrors(errors);
       } else {

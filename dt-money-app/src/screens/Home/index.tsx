@@ -1,8 +1,7 @@
-import { useAuthContext } from "@/context/auth.context";
 import { useTransactionContext } from "@/context/transaction.context";
 import { useErrorHandler } from "@/shared/hooks/useErrorHandler";
 import { useEffect } from "react";
-import { ActivityIndicator, FlatList, Text } from "react-native";
+import { ActivityIndicator, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ListHeader } from "./ListHeader";
 import { TransactionCard } from "./TransactionCard";
@@ -11,7 +10,6 @@ import { EmptyList } from "./EmptyList";
 import { colors } from "@/shared/colors";
 
 export const Home = () => {
-  const { handleLogout } = useAuthContext();
   const {
     fetchCategories,
     fetchTransactions,
@@ -65,13 +63,6 @@ export const Home = () => {
       });
       await loadMoreTransactions();
 
-      /* await new Promise((resolve) => {
-        setTimeout(async () => {
-          await loadMoreTransactions();
-
-          resolve(null);
-        }, 2000);
-      }); */
     } catch (error) {
       handleError(error, "Falha ao carregar novas transações");
     } finally {

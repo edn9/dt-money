@@ -1,5 +1,5 @@
 import { DismissKeyboardView } from "@/components/DismissKeyboardView";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { RegisterForm } from "./RegisterForm";
 import { AuthHeader } from "@/components/AuthHeader";
 

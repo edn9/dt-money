@@ -4,6 +4,7 @@ import {
   PropsWithChildren,
   useCallback,
   useContext,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -51,8 +52,16 @@ export const BottomSheetProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }, []);
 
+  const value = useMemo(
+    () => ({
+      openBottomSheet,
+      closeBottomSheet,
+    }),
+    [openBottomSheet, closeBottomSheet]
+  );
+
   return (
-    <BottomSheetContext.Provider value={{ openBottomSheet, closeBottomSheet }}>
+    <BottomSheetContext.Provider value={value}>
       {children}
 
       {isOpen && (

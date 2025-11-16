@@ -16,10 +16,14 @@ export const dtMoneyApi = axios.create({
 addTokenToRequest(dtMoneyApi);
 
 dtMoneyApi.interceptors.response.use(
-  (config) => config,
+  (response) => response,
   (error) => {
-    if (error.response && error.response.data) {
+    if (error.response?.data?.message) {
       return Promise.reject(new AppError(error.response.data.message));
+    } else if (error.response?.data) {
+      return Promise.reject(new AppError("Erro na requisição"));
+    } else if (error.request) {
+      return Promise.reject(new AppError("Erro de conexão. Verifique sua internet"));
     } else {
       return Promise.reject(new AppError("Falha na requisição"));
     }

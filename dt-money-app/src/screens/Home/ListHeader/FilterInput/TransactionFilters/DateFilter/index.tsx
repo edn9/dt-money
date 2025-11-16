@@ -1,7 +1,7 @@
 import { useTransactionContext } from "@/context/transaction.context";
 import clsx from "clsx";
 import { format, isValid } from "date-fns";
-import { fi, ptBR } from "date-fns/locale";
+import { ptBR } from "date-fns/locale";
 import { useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import DateTimePicker from "react-native-modal-datetime-picker";

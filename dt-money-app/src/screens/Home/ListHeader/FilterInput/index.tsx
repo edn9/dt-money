@@ -17,7 +17,6 @@ export const FilterInput = () => {
   useEffect(() => {
     const handler = setTimeout(() => {
       setSearchText(text);
-      //console.log(`text ${text}, searchText ${searchText}`);
     }, 500);
 
     return () => clearTimeout(handler);

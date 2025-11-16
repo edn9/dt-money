@@ -3,6 +3,7 @@ import {
   FC,
   PropsWithChildren,
   useContext,
+  useMemo,
   useState,
 } from "react";
 
@@ -36,14 +37,17 @@ export const SnackbarContextProvider: FC<PropsWithChildren> = ({
     }, 3000);
   };
 
+  const value = useMemo(
+    () => ({
+      message,
+      type,
+      notify,
+    }),
+    [message, type, notify]
+  );
+
   return (
-    <SnackbarContext.Provider
-      value={{
-        message,
-        type,
-        notify,
-      }}
-    >
+    <SnackbarContext.Provider value={value}>
       {children}
     </SnackbarContext.Provider>
   );

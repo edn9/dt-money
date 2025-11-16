@@ -7,7 +7,6 @@ import { Text, View, ActivityIndicator } from "react-native";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "./schema";
 import { useAuthContext } from "@/context/auth.context";
-import { useSnackbarContext } from "@/context/snackbar.context";
 import { useErrorHandler } from "@/shared/hooks/useErrorHandler";
 import { colors } from "@/shared/colors";
 
@@ -31,7 +30,6 @@ export const LoginForm = () => {
 
   const { handleAuthenticate } = useAuthContext();
   const { handleError } = useErrorHandler();
-  const { notify } = useSnackbarContext();
 
   const navigation = useNavigation<NavigationProp<PublicStackParamsList>>();
 
@@ -40,17 +38,6 @@ export const LoginForm = () => {
       await handleAuthenticate(userData);
     } catch (error) {
       handleError(error, "Falha ao logar");
-      /* if (error instanceof AppError) {
-        notify({
-          message: error.message,
-          messageType: "ERROR",
-        });
-      }
-         console.log(error instanceof AppError);
-      
-      if (error instanceof AxiosError) {
-        console.log(error.response?.data);
-      }*/
     }
   };
 

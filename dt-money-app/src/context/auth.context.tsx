@@ -5,7 +5,9 @@ import {
   FC,
   PropsWithChildren,
   useContext,
+  useMemo,
   useState,
+  useCallback
 } from "react";
 import * as authService from "@/shared/services/dt-money/auth.service";
 import { IUser } from "@/shared/interfaces/user-interface";
@@ -17,7 +19,7 @@ type AuthContextType = {
   token: string | null;
   handleAuthenticate: (params: FormLoginParams) => Promise<void>;
   handleRegister: (params: FormRegisterParams) => Promise<void>;
-  handleLogout: () => void;
+  handleLogout: () => Promise<void>;
   restoreUserSession: () => Promise<string | null>;
 };
 
@@ -29,7 +31,11 @@ export const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [user, setUser] = useState<IUser | null>(null);
   const [token, setToken] = useState<string | null>(null);
 
-  const handleAuthenticate = async (userData: FormLoginParams) => {
+  const handleAuthenticate = useCallback(async (userData: FormLoginParams) => {
+    setUser(null);
+    setToken(null);
+    await AsyncStorage.removeItem("dt-money-user");
+    
     const { token, user } = await authService.authenticate(userData);
     await AsyncStorage.setItem(
       "dt-money-user",
@@ -38,9 +44,13 @@ export const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
     setUser(user);
     setToken(token);
-  };
+  }, []);
 
-  const handleRegister = async (formData: FormRegisterParams) => {
+  const handleRegister = useCallback(async (formData: FormRegisterParams) => {
+    setUser(null);
+    setToken(null);
+    await AsyncStorage.removeItem("dt-money-user");
+    
     const { token, user } = await authService.registerUser(formData);
     await AsyncStorage.setItem(
       "dt-money-user",
@@ -49,15 +59,15 @@ export const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
     setUser(user);
     setToken(token);
-  };
+  }, []);
 
-  const handleLogout = async () => {
-    await AsyncStorage.clear();
+  const handleLogout = useCallback(async () => {
+    await AsyncStorage.removeItem("dt-money-user");
     setToken(null);
     setUser(null);
-  };
+  }, []);
 
-  const restoreUserSession = async () => {
+  const restoreUserSession = useCallback(async () => {
     const userData = await AsyncStorage.getItem("dt-money-user");
     if (userData) {
       const { token, user } = JSON.parse(userData) as IAuthenticateResponse;
@@ -65,22 +75,28 @@ export const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
       setToken(token);
     }
     return userData;
-  };
+  }, []);
 
-  return (
-    <AuthContext.Provider
-      value={{
-        user,
-        token,
-        handleAuthenticate,
-        handleRegister,
-        handleLogout,
-        restoreUserSession,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+  const value = useMemo(
+    () => ({
+      user,
+      token,
+      handleAuthenticate,
+      handleRegister,
+      handleLogout,
+      restoreUserSession,
+    }),
+    [
+      user,
+      token,
+      handleAuthenticate,
+      handleRegister,
+      handleLogout,
+      restoreUserSession,
+    ]
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuthContext = () => {

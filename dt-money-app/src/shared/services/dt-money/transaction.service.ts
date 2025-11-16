@@ -45,5 +45,4 @@ export const updateTransaction = async (
   transaction: UpdateTransactionInterface
 ) => {
   await dtMoneyApi.put(`/transaction`, transaction);
-  //await dtMoneyApi.put(`/transaction/${transaction.id}`, transaction);
 };

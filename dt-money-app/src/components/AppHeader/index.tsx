@@ -6,7 +6,7 @@ import { useBottomSheetContext } from "@/context/bottomsheet.context";
 import { NewTransaction } from "../NewTransaction";
 
 export const AppHeader = () => {
-  const { handleLogout } = useAuthContext();
+  const { handleLogout, user } = useAuthContext();
   const { openBottomSheet } = useBottomSheetContext();
 
   return (
@@ -17,13 +17,18 @@ export const AppHeader = () => {
           className="w-[130px] h-[30px]"
         />
 
+
         <TouchableOpacity
           onPress={handleLogout}
           className="flex-row items-center gap-2 mt-2"
         >
           <MaterialIcons name="logout" color={colors.gray["700"]} size={15} />
           <Text className="text-gray-700 text-base">Sair da conta</Text>
+
         </TouchableOpacity>
+
+        <Text className="text-white text-base">Olá, {user?.name || "Usuário"}!</Text>
+
       </View>
 
       <TouchableOpacity

@@ -1,0 +1,106 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Android
+android/
+**/android/
+*.apk
+*.aab
+*.keystore
+
+# iOS
+ios/
+**/ios/
+*.xcworkspace
+*.xcuserdata
+
+# Build files
+build/
+**/build/
+dist/
+**/dist/
+*.tsbuildinfo
+
+# Environment variables
+.env
+.env.local
+.env*.local
+.env.production
+.env.development
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+.cache/
+
+# Database
+*.sqlite
+*.sqlite3
+*.db
+
+# Expo
+.expo/
+expo-env.d.ts
+web-build/
+
+# Metro
+.metro-health-check*
+
+# Native files
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.pem
+
+# Package manager locks (opcional - descomente se não quiser versionar)
+# package-lock.json
+# yarn.lock
+# bun.lock
+# pnpm-lock.yaml
+
+# Coverage
+coverage/
+.nyc_output/
+*.lcov
+
+# Testing
+.jest/
+

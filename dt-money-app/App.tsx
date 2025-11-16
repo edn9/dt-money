@@ -14,7 +14,7 @@ import {
 export default function App() {
   configureReanimatedLogger({
     level: ReanimatedLogLevel.warn,
-    strict: false, // Reanimated runs in strict mode by default
+    strict: false, 
   });
 
   return (

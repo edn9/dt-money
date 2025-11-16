@@ -1,6 +1,5 @@
 import { useTransactionContext } from "@/context/transaction.context";
 import { TransactionTypes } from "@/shared/enums/transaction-types";
-import { fi } from "date-fns/locale";
 import Checkbox from "expo-checkbox";
 import { Text, TouchableOpacity, View } from "react-native";
 

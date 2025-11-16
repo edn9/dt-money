@@ -8,8 +8,6 @@ import { Loading } from "@/screens/Loading";
 
 const NavigationRoutes = () => {
   const [loading, setLoading] = useState(true);
-
-  //const [user, setUser] = useState(undefined); //futuramente mover gerenciamento de estado global
   const { token, user } = useAuthContext();
 
   const Routes = useCallback(() => {

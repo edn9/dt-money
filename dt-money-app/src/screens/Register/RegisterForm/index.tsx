@@ -7,7 +7,6 @@ import { ActivityIndicator, Text, View } from "react-native";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "./schema";
 import { useAuthContext } from "@/context/auth.context";
-import { AxiosError } from "axios";
 import { useErrorHandler } from "@/shared/hooks/useErrorHandler";
 import { colors } from "@/shared/colors";
 
@@ -43,9 +42,6 @@ export const RegisterForm = () => {
       await handleRegister(userData);
     } catch (error) {
       handleError(error, "Falha ao cadastrar usuário");
-      /* if (error instanceof AxiosError) {
-        console.log(error.response?.data);
-      } */
     }
   };
 
